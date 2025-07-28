@@ -12,10 +12,11 @@
     "resources": "resources.json",
     "dataSources": {
       "engagementService": {
-        "uri": "http://localhost:4005/engagement/",
+        "uri": "/engagement/",
         "type": "OData",
         "settings": {
-          "odataVersion": "4.0"
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "2.0"
         }
       }
     }

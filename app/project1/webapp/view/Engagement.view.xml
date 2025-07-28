@@ -7,11 +7,12 @@
         <pages>
             <Page id="page" title="Passenger Engagement">
                 <content>
-                    <VBox id="mainVBox">
+                    <VBox id="mainVBox" class="sapUiSmallMargin">
                         <Label id="passengerLabel" text="Select Passenger" labelFor="passengerSelect"/>
                         <ComboBox id="passengerSelect"
                                   items="{engagement>/Passengers}"
-                                  width="300px">
+                                  width="300px"
+                                  selectedKey="1">
                             <items>
                                 <core:Item id="passengerItemTemplate" 
                                            key="{engagement>ID}"
@@ -19,14 +20,15 @@
                             </items>
                         </ComboBox>
 
-                        <Label id="flightLabel" text="Select Flight" labelFor="flightSelect"/>
+                        <Label id="flightLabel" text="Select Flight" labelFor="flightSelect" class="sapUiSmallMarginTop"/>
                         <ComboBox id="flightSelect"
                                   items="{engagement>/Flights}"
-                                  width="300px">
+                                  width="300px"
+                                  selectedKey="SKY001">
                             <items>
                                 <core:Item id="flightItemTemplate"
                                            key="{engagement>FlightNumber}"
-                                           text="{engagement>Destination} - {engagement>DepartureDate}"/>
+                                           text="{engagement>Destination}"/>
                             </items>
                         </ComboBox>
 
