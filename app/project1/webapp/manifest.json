@@ -7,20 +7,14 @@
     "applicationVersion": {
       "version": "0.0.1"
     },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
+    "title": "SkyLink Engagement Hub",
+    "description": "Passenger Retention Tool",
     "resources": "resources.json",
-    "sourceTemplate": {
-      "id": "@sap/generator-fiori:lrop",
-      "version": "1.18.0",
-      "toolsId": "f7d7723d-fb69-46d4-9f8b-844d696701d4"
-    },
     "dataSources": {
-      "mainService": {
-        "uri": "/odata/v4/maintenance/",
+      "engagementService": {
+        "uri": "/engagement/",
         "type": "OData",
         "settings": {
-          "annotations": [],
           "odataVersion": "4.0"
         }
       }
@@ -32,9 +26,7 @@
       "icon": "",
       "favIcon": "",
       "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
+      "tablet": ""
     },
     "deviceTypes": {
       "desktop": true,
@@ -45,16 +37,11 @@
   "sap.ui5": {
     "flexEnabled": true,
     "dependencies": {
-      "minUI5Version": "1.136.2",
+      "minUI5Version": "1.108.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {},
-        "sap.fe.templates": {}
+        "sap.ui.core": {}
       }
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
     },
     "models": {
       "i18n": {
@@ -63,27 +50,18 @@
           "bundleName": "project1.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
+      "engagement": {
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "dataSource": "engagementService",
         "settings": {
           "operationMode": "Server",
-          "autoExpandSelect": true,
-          "earlyRequests": true
+          "autoExpandSelect": true
         }
-      },
-      "@i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties"
       }
-    },
-    "resources": {
-      "css": []
     },
     "routing": {
       "config": {
-        "routerClass": "sap.ui.core.routing.Router",
-        "async": true,
+        "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
         "controlId": "app",
         "controlAggregation": "pages"
@@ -91,67 +69,17 @@
       "routes": [
         {
           "pattern": "",
-          "name": "AircraftList",
-          "target": "AircraftList"
-        },
-        {
-          "pattern": "Aircraft({key})",
-          "name": "AircraftObjectPage",
-          "target": "AircraftObjectPage"
-        },
-        {
-          "pattern": "engagement",
-          "name": "Engagement",
+          "name": "engagement",
           "target": "engagementView"
         }
       ],
       "targets": {
-        "AircraftList": {
-          "type": "Component",
-          "id": "AircraftList",
-          "name": "sap.fe.templates.ListReport",
-          "options": {
-            "settings": {
-              "contextPath": "/Aircraft",
-              "variantManagement": "Page",
-              "navigation": {
-                "Aircraft": {
-                  "detail": {
-                    "route": "AircraftObjectPage"
-                  }
-                }
-              },
-              "controlConfiguration": {
-                "@com.sap.vocabularies.UI.v1.LineItem": {
-                  "tableSettings": {
-                    "type": "ResponsiveTable"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "AircraftObjectPage": {
-          "type": "Component",
-          "id": "AircraftObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "editableHeaderContent": false,
-              "contextPath": "/Aircraft"
-            }
-          }
-        },
         "engagementView": {
-          "type": "View",
-          "id": "engagementView",
-          "name": "project1.view.Engagement"
+          "viewName": "Engagement",
+          "viewLevel": 1,
+          "viewId": "engagementView"
         }
       }
     }
-  },
-  "sap.fiori": {
-    "registrationIds": [],
-    "archeType": "transactional"
   }
 }

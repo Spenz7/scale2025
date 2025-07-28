@@ -8,14 +8,14 @@
     "sapui5"
   ],
   "main": "webapp/index.html",
-  "dependencies": {},
   "devDependencies": {
-    "@ui5/cli": "^3.0.0",
-    "@sap/ux-ui5-tooling": "1",
+    "@sap/ux-ui5-tooling": "^1.18.3",
+    "@ui5/cli": "^3.11.10",
     "ui5-task-zipper": "^3.4.x"
   },
   "scripts": {
-    "start": "fiori run --open index.html",
+    "start": "ui5 serve --open index.html",
+    "build": "ui5 build",
     "deploy-config": "npx -p @sap/ux-ui5-tooling fiori add deploy-config cf",
     "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo"
   }

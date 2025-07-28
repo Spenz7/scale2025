@@ -1,22 +1,24 @@
-sap.ui.define(["sap/ui/core/mvc/Controller"], function(Controller) {
-    return Controller.extend("Engagement.controller", {
-      onSelectPassenger: function(oEvent) {
-        this.selectedPassenger = oEvent.getSource().getBindingContext().getObject();
-        this.byId("offerDialog").open();
-      },
-      
-      onSendOffer: async function() {
-        const flight = this.byId("flightSelect").getSelectedItem().getKey();
-        const result = await this.getView().getModel().callFunction("/sendOffer", {
-          method: "POST",
-          urlParameters: {
-            passengerID: this.selectedPassenger.ID,
-            flightNumber: flight
-          }
-        });
-        
-        sap.m.MessageToast.show(result.message);
-        this.byId("offerDialog").close();
+sap.ui.define([
+  "sap/ui/core/mvc/Controller",
+  "sap/m/MessageToast"
+], function(Controller, MessageToast) {
+  "use strict";
+
+  return Controller.extend("project1.controller.Engagement", {
+      onSendOffer: function() {
+          const passenger = this.byId("passengerSelect").getSelectedKey();
+          const flight = this.byId("flightSelect").getSelectedKey();
+          
+          this.getView().getModel("engagement").submit("/sendOffer", {
+              data: {
+                  passengerID: passenger,
+                  flightNumber: flight
+              }
+          }).then(response => {
+              MessageToast.show(response.message);
+          }).catch(error => {
+              MessageToast.show("Error: " + error.message);
+          });
       }
-    });
   });
+});
