@@ -6,6 +6,8 @@ service MaintenanceService {
 
   @readonly
   entity Flight as projection on my.Flight;
+
+  
 }
 
 // Example annotations for Passenger entity

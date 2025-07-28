@@ -11,6 +11,7 @@
   "devDependencies": {
     "@sap/ux-ui5-tooling": "^1.18.3",
     "@ui5/cli": "^3.11.10",
+    "cors-proxy": "^1.0.3",
     "ui5-task-zipper": "^3.4.x"
   },
   "scripts": {
