@@ -1,0 +1,22 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core">
+  <Page id="customerOffersPage" title="Customer Offers">
+    <List id="passengerList" items="{/Passengers}">
+      <items>
+        <ObjectListItem
+          id="passengerItem"
+          title="{Name}"
+          number="{Tier}"
+          press="onSelectPassenger" />
+      </items>
+    </List>
+
+    <Dialog id="offerDialog" title="Send Offer">
+      <ComboBox id="flightSelect" items="{/Flights}">
+        <items>
+          <core:Item id="flightItem" key="{FlightNumber}" text="{Destination} ({DepartureDate})" />
+        </items>
+      </ComboBox>
+      <Button id="sendOfferBtn" text="Send Offer" press="onSendOffer" />
+    </Dialog>
+  </Page>
+</mvc:View>

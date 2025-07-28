@@ -92,6 +92,11 @@
           "pattern": "Aircraft({key}):?query:",
           "name": "AircraftObjectPage",
           "target": "AircraftObjectPage"
+        },
+        {
+          "pattern": "engagement",
+          "name": "Engagement",
+          "target": "engagementView"
         }
       ],
       "targets": {
@@ -130,6 +135,11 @@
               "contextPath": "/Aircraft"
             }
           }
+        },
+        "engagementView": {
+          "type": "View",
+          "id": "engagementView",
+          "name": "Engagement.view"
         }
       }
     }
