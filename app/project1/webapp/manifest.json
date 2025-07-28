@@ -81,15 +81,21 @@
       "css": []
     },
     "routing": {
-      "config": {},
+      "config": {
+        "routerClass": "sap.ui.core.routing.Router",
+        "async": true,
+        "viewType": "XML",
+        "controlId": "app",
+        "controlAggregation": "pages"
+      },
       "routes": [
         {
-          "pattern": ":?query:",
+          "pattern": "",
           "name": "AircraftList",
           "target": "AircraftList"
         },
         {
-          "pattern": "Aircraft({key}):?query:",
+          "pattern": "Aircraft({key})",
           "name": "AircraftObjectPage",
           "target": "AircraftObjectPage"
         },
@@ -139,7 +145,7 @@
         "engagementView": {
           "type": "View",
           "id": "engagementView",
-          "name": "Engagement.view"
+          "name": "project1.view.Engagement"
         }
       }
     }

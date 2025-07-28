@@ -1,16 +1,20 @@
-using maintenance as my from '../db/data-model';
+using skyengage as my from '../db/data-model';
+
 service MaintenanceService {
-   @readonly
-   entity Aircraft as projection on my.Aircraft;
+  @readonly
+  entity Passenger as projection on my.Passenger;
+
+  @readonly
+  entity Flight as projection on my.Flight;
 }
 
-
-annotate MaintenanceService.Aircraft with @(
-   UI.LineItem : [
-       { Value: tailNumber, Label: 'Tail Number' },
-       { Value: model, Label: 'Model' },
-       { Value: lastCheck, Label: 'Last Check' },
-       { Value: nextCheck, Label: 'Next Check' },
-       { Value: flightHours, Label: 'Flight Hours' }
-   ]
+// Example annotations for Passenger entity
+annotate MaintenanceService.Passenger with @(
+  UI.LineItem : [
+    { Value: ID, Label: 'Passenger ID' },
+    { Value: Name, Label: 'Name' },
+    { Value: Email, Label: 'Email' },
+    { Value: Tier, Label: 'Tier' },
+    { Value: LastFlightDate, Label: 'Last Flight Date' }
+  ]
 );
