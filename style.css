@@ -1,0 +1,23 @@
+ 
+html, body, #content {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sapMPage {
+  height: 100%;
+}
+
+.tileWrapper {
+  width: 200px;
+  margin: 0 12px 12px 0;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+  background-color: #f0f0f0;
+  border: 1px dashed #999;
+}

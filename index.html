@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>SAPUI5 Dashboard – Drag & Drop</title>
+
+  <!-- SAPUI5 -->
+  <script
+    id="sap-ui-bootstrap"
+    src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_fiori_3"
+    data-sap-ui-libs="sap.m"
+    data-sap-ui-async="true">
+  </script>
+
+  <!-- Drag-and-drop -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+  <!-- Styles and scripts -->
+  <link rel="stylesheet" href="style.css" />
+  <script src="sapDashboard.js"></script>
+  <script src="aiPrompt.js"></script>
+
+  <style>
+    /* Chatbot styles */
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      background: #0a6ed1;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      z-index: 9999;
+    }
+    #chatbot-container {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      height: 400px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: none;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+    }
+    #chatbot-header {
+      background: #0a6ed1;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+    }
+    #chat-messages {
+      flex-grow: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    #chat-input {
+      border: none;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+  </style>
+</head>
+
+<body class="sapUiBody sapUiSizeCompact" id="content">
+
+  <!-- Your main dashboard content here -->
+
+  <!-- Chatbot Toggle Icon -->
+  <div id="chatbot-toggle">AI</div>
+
+  <!-- Chatbot Window (hidden initially) -->
+  <div id="chatbot-container">
+    <div id="chatbot-header">AI Chatbot</div>
+    <div id="chat-messages"><p><em>Ask me anything about the dashboard...</em></p></div>
+    <input id="chat-input" type="text" placeholder="Type a question..." autocomplete="off" />
+  </div>
+
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('chatbot-toggle');
+      const chatContainer = document.getElementById('chatbot-container');
+      const chatInput = document.getElementById('chat-input');
+      const chatMessages = document.getElementById('chat-messages');
+
+      // Toggle chat window on icon click
+      toggleBtn.addEventListener('click', () => {
+        if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+          chatContainer.style.display = 'flex';
+          chatInput.focus();
+        } else {
+          chatContainer.style.display = 'none';
+        }
+      });
+
+      // Handle input enter key
+      chatInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && chatInput.value.trim() !== '') {
+          const userText = chatInput.value.trim();
+          appendMessage(`You: ${userText}`, true);
+          chatInput.value = '';
+          handleFakeAiRedirect(userText.toLowerCase());
+        }
+      });
+
+      function appendMessage(text, isUser) {
+        const p = document.createElement('p');
+        p.textContent = text;
+        if (isUser) {
+          p.style.fontWeight = 'bold';
+        }
+        chatMessages.appendChild(p);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function handleFakeAiRedirect(input) {
+        let redirectUrl = null;
+        let response = "Sorry, I didn't understand that command.";
+
+        if (input.includes('booking')) redirectUrl = 'booking.html';
+        else if (input.includes('pre-flight') || input.includes('upgrade')) redirectUrl = 'preflight.html';
+        else if (input.includes('in-flight')) redirectUrl = 'inflight.html';
+        else if (input.includes('post-flight')) redirectUrl = 'postflight.html';
+        else if (input.includes('loyalty')) redirectUrl = 'loyalty.html';
+
+        if (redirectUrl) {
+          response = `Redirecting you to the ${redirectUrl.replace('.html','').replace(/-/g, ' ')} page...`;
+          appendMessage(`AI: ${response}`, false);
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 1500);
+        } else {
+          appendMessage(`AI: ${response}`, false);
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
