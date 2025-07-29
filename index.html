@@ -19,7 +19,6 @@
   <!-- Styles and scripts -->
   <link rel="stylesheet" href="style.css" />
   <script src="sapDashboard.js"></script>
-  <!--<script src="aiPrompt.js"></script>-->
 
   <style>
     /* Chatbot styles */
@@ -79,7 +78,7 @@
 
 <body class="sapUiBody sapUiSizeCompact" id="content">
 
-  <!-- Your main dashboard content here -->
+  <!-- Main dashboard content rendered by SAPUI5 -->
 
   <!-- Chatbot Toggle Icon -->
   <div id="chatbot-toggle">AI</div>
@@ -87,68 +86,13 @@
   <!-- Chatbot Window (hidden initially) -->
   <div id="chatbot-container">
     <div id="chatbot-header">AI Chatbot</div>
-    <div id="chat-messages"><p><em>Ask me anything about the dashboard...</em></p></div>
+    <div id="chat-messages">
+      <p><em>Ask me anything about the dashboard...</em></p>
+    </div>
     <input id="chat-input" type="text" placeholder="Type a question..." autocomplete="off" />
   </div>
 
-  <script>
-    (function() {
-      const toggleBtn = document.getElementById('chatbot-toggle');
-      const chatContainer = document.getElementById('chatbot-container');
-      const chatInput = document.getElementById('chat-input');
-      const chatMessages = document.getElementById('chat-messages');
-
-      // Toggle chat window on icon click
-      toggleBtn.addEventListener('click', () => {
-        if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
-          chatContainer.style.display = 'flex';
-          chatInput.focus();
-        } else {
-          chatContainer.style.display = 'none';
-        }
-      });
-
-      // Handle input enter key
-      chatInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' && chatInput.value.trim() !== '') {
-          const userText = chatInput.value.trim();
-          appendMessage(`You: ${userText}`, true);
-          chatInput.value = '';
-          handleFakeAiRedirect(userText.toLowerCase());
-        }
-      });
-
-      function appendMessage(text, isUser) {
-        const p = document.createElement('p');
-        p.textContent = text;
-        if (isUser) {
-          p.style.fontWeight = 'bold';
-        }
-        chatMessages.appendChild(p);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
-
-      function handleFakeAiRedirect(input) {
-        let redirectUrl = null;
-        let response = "Sorry, I didn't understand that command.";
-
-        if (input.includes('booking')) redirectUrl = 'booking.html';
-        else if (input.includes('pre-flight') || input.includes('upgrade')) redirectUrl = 'preflight.html';
-        else if (input.includes('in-flight')) redirectUrl = 'inflight.html';
-        else if (input.includes('post-flight')) redirectUrl = 'postflight.html';
-        else if (input.includes('loyalty')) redirectUrl = 'loyalty.html';
-
-        if (redirectUrl) {
-          response = `Redirecting you to the ${redirectUrl.replace('.html','').replace(/-/g, ' ')} page...`;
-          appendMessage(`AI: ${response}`, false);
-          setTimeout(() => {
-            window.location.href = redirectUrl;
-          }, 1500);
-        } else {
-          appendMessage(`AI: ${response}`, false);
-        }
-      }
-    })();
-  </script>
+  <!-- Load chatbot logic from external file -->
+  <script src="aiPrompt.js"></script>
 </body>
 </html>

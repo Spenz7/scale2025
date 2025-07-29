@@ -1,7 +1,20 @@
 window.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('chatbot-toggle');
+  const chatContainer = document.getElementById('chatbot-container');
   const input = document.getElementById('chat-input');
   const messages = document.getElementById('chat-messages');
 
+  // Toggle chat window visibility
+  toggleBtn.addEventListener('click', () => {
+    if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+      chatContainer.style.display = 'flex';
+      input.focus();
+    } else {
+      chatContainer.style.display = 'none';
+    }
+  });
+
+  // Enter key handler
   input.addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && input.value.trim() !== '') {
       const userText = input.value.trim().toLowerCase();
@@ -12,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
       userMsg.style.fontWeight = 'bold';
       messages.appendChild(userMsg);
 
-      // Simple AI redirect logic
+      // Redirect logic
       let response = "Sorry, I didn't understand that command.";
       let redirectUrl = null;
 
@@ -24,10 +37,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (redirectUrl) {
         response = `Redirecting you to the ${redirectUrl.replace('.html','').replace(/-/g, ' ')} page...`;
-        messages.appendChild(document.createElement('p')).textContent = `AI: ${response}`;
+        const aiMsg = document.createElement('p');
+        aiMsg.textContent = `AI: ${response}`;
+        messages.appendChild(aiMsg);
         setTimeout(() => window.location.href = redirectUrl, 1500);
       } else {
-        messages.appendChild(document.createElement('p')).textContent = `AI: ${response}`;
+        const aiMsg = document.createElement('p');
+        aiMsg.textContent = `AI: ${response}`;
+        messages.appendChild(aiMsg);
       }
 
       messages.scrollTop = messages.scrollHeight;

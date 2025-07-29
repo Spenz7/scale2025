@@ -1,11 +1,11 @@
- 
-html, body, #content {
-  height: 100%;
+html, body {
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
 }
+#content {
+  min-height: 100%;
+}
+
 
 .sapMPage {
   height: 100%;
