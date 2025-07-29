@@ -2,208 +2,125 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>SAPUI5 Dashboard – Drag & Drop</title>
-
-  <!-- SAPUI5 -->
-  <script
-    id="sap-ui-bootstrap"
-    src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
-    data-sap-ui-theme="sap_fiori_3"
-    data-sap-ui-libs="sap.m"
-    data-sap-ui-async="true">
-  </script>
-
-  <!-- Drag-and-drop -->
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
-
-  <style>
-    html, body, #content {
-      height: 100%;
-      margin: 0;
-    }
-
-    .sapMPage {
-      height: 100%;
-    }
-
-    .tileWrapper {
-      width: 200px;
-      margin: 0 12px 12px 0;
-    }
-  </style>
+  <title>In-Flight Engagement</title>
 </head>
+<body>
+  <h1>In-Flight Engagement Page</h1>
+  <p>This is the in-flight engagement page placeholder.</p>
+  <a href="index.html">Back to Dashboard</a>
 
-<body class="sapUiBody sapUiSizeCompact" id="content">
+  <!-- Chatbot Toggle Icon -->
+  <div id="chatbot-toggle" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background: #0a6ed1;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    z-index: 9999;
+  ">
+    AI
+  </div>
 
-<script>
-  sap.ui.getCore().attachInit(function () {
-    const tileData = [
-      { title: "Booking Confirmation", info: "Confirmation Email", icon: "sap-icon://email", url: "booking.html" },
-      { title: "Pre-Flight Engagement", info: "Upgrade Notification", icon: "sap-icon://flight", url: "preflight.html" },
-      { title: "In-Flight Engagement", info: "Loyalty & Promotions", icon: "sap-icon://flight", url: "inflight.html" },
-      { title: "Post-Flight Engagement", info: "Feedback & Thanks", icon: "sap-icon://customer-financial-fact-sheet", url: "postflight.html" },
-      { title: "Loyalty & Retargeting", info: "Tailored Rewards", icon: "sap-icon://favorite", url: "loyalty.html" }
-    ];
+  <!-- Chatbot Window (hidden initially) -->
+  <div id="chatbot-container" style="
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 400px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: none;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    z-index: 9999;
+  ">
+    <div id="chatbot-header" style="
+      background: #0a6ed1;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+    ">AI Chatbot</div>
+    <div id="chat-messages" style="
+      flex-grow: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    "><p><em>Ask me anything about the dashboard...</em></p></div>
+    <input id="chat-input" type="text" placeholder="Type a question..." autocomplete="off" style="
+      border: none;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      font-size: 14px;
+      outline: none;
+    "/>
+  </div>
 
-    const oFlexBox = new sap.m.FlexBox("tileContainer", {
-      direction: "Row",
-      wrap: "Wrap",
-      justifyContent: "Center",
-      alignItems: "Center",
-      height: "100%",
-      width: "100%",
-      renderType: "Div",
-      items: tileData.map(data =>
-        new sap.m.StandardTile({
-          title: data.title,
-          info: data.info,
-          icon: data.icon,
-          press: () => { window.location.href = data.url; }
-        }).addStyleClass("tileWrapper")
-      )
-    });
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('chatbot-toggle');
+      const chatContainer = document.getElementById('chatbot-container');
+      const chatInput = document.getElementById('chat-input');
+      const chatMessages = document.getElementById('chat-messages');
 
-    const oPage = new sap.m.Page({
-      title: "Customer Engagement Dashboard",
-      content: [oFlexBox],
-      enableScrolling: false
-    });
+      toggleBtn.addEventListener('click', () => {
+        if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+          chatContainer.style.display = 'flex';
+          chatInput.focus();
+        } else {
+          chatContainer.style.display = 'none';
+        }
+      });
 
-    oPage.placeAt("content");
+      chatInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && chatInput.value.trim() !== '') {
+          const userText = chatInput.value.trim();
+          appendMessage(`You: ${userText}`, true);
+          chatInput.value = '';
+          handleFakeAiRedirect(userText.toLowerCase());
+        }
+      });
 
-    // Enable drag-and-drop with SortableJS
-    oFlexBox.addEventDelegate({
-      onAfterRendering: function () {
-        const containerDom = oFlexBox.getDomRef();
-        if (containerDom && !containerDom._sortableInit) {
-          Sortable.create(containerDom, {
-            animation: 150,
-            ghostClass: 'sortable-ghost'
-          });
-          containerDom._sortableInit = true;
+      function appendMessage(text, isUser) {
+        const p = document.createElement('p');
+        p.textContent = text;
+        if (isUser) p.style.fontWeight = 'bold';
+        chatMessages.appendChild(p);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function handleFakeAiRedirect(input) {
+        let redirectUrl = null;
+        let response = "Sorry, I didn't understand that command.";
+
+        if (input.includes('booking')) redirectUrl = 'booking.html';
+        else if (input.includes('pre-flight') || input.includes('upgrade')) redirectUrl = 'preflight.html';
+        else if (input.includes('in-flight')) redirectUrl = 'inflight.html';
+        else if (input.includes('post-flight')) redirectUrl = 'postflight.html';
+        else if (input.includes('loyalty')) redirectUrl = 'loyalty.html';
+
+        if (redirectUrl) {
+          response = `Redirecting you to the ${redirectUrl.replace('.html','').replace(/-/g, ' ')} page...`;
+          appendMessage(`AI: ${response}`, false);
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 1500);
+        } else {
+          appendMessage(`AI: ${response}`, false);
         }
       }
-    });
-  });
-</script>
-
-<!-- Chatbot toggle button -->
-<div id="chatbot-toggle" style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 48px;
-  height: 48px;
-  background: #0a6ed1;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: bold;
-  font-size: 24px;
-  z-index: 9999;
-  user-select: none;
-">AI</div>
-
-<!-- Chatbot window (hidden initially) -->
-<div id="chatbot-container" style="
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 320px;
-  height: 400px;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  display: none;
-  flex-direction: column;
-  font-family: Arial, sans-serif;
-  z-index: 9999;
-">
-  <div id="chatbot-header" style="
-    background: #0a6ed1;
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-  ">AI Chatbot</div>
-  <div id="chat-messages" style="
-    flex-grow: 1;
-    padding: 10px;
-    overflow-y: auto;
-    font-size: 14px;
-  "><p><em>Ask me anything about the dashboard...</em></p></div>
-  <input id="chat-input" type="text" placeholder="Type a question..." autocomplete="off" style="
-    border: none;
-    border-top: 1px solid #ccc;
-    padding: 10px;
-    font-size: 14px;
-    outline: none;
-  "/>
-</div>
-
-<script>
-  (function() {
-    const toggleBtn = document.getElementById('chatbot-toggle');
-    const chatContainer = document.getElementById('chatbot-container');
-    const chatInput = document.getElementById('chat-input');
-    const chatMessages = document.getElementById('chat-messages');
-
-    // Toggle chat window on icon click
-    toggleBtn.addEventListener('click', () => {
-      if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
-        chatContainer.style.display = 'flex';
-        chatInput.focus();
-      } else {
-        chatContainer.style.display = 'none';
-      }
-    });
-
-    // Handle input enter key
-    chatInput.addEventListener('keydown', function(event) {
-      if (event.key === 'Enter' && chatInput.value.trim() !== '') {
-        const userText = chatInput.value.trim();
-        appendMessage(`You: ${userText}`, true);
-        chatInput.value = '';
-        handleFakeAiRedirect(userText.toLowerCase());
-      }
-    });
-
-    function appendMessage(text, isUser) {
-      const p = document.createElement('p');
-      p.textContent = text;
-      if (isUser) p.style.fontWeight = 'bold';
-      chatMessages.appendChild(p);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function handleFakeAiRedirect(input) {
-      let redirectUrl = null;
-      let response = "Sorry, I didn't understand that command.";
-
-      if (input.includes('booking')) redirectUrl = 'booking.html';
-      else if (input.includes('pre-flight') || input.includes('upgrade')) redirectUrl = 'preflight.html';
-      else if (input.includes('in-flight')) redirectUrl = 'inflight.html';
-      else if (input.includes('post-flight')) redirectUrl = 'postflight.html';
-      else if (input.includes('loyalty')) redirectUrl = 'loyalty.html';
-
-      if (redirectUrl) {
-        response = `Redirecting you to the ${redirectUrl.replace('.html','').replace(/-/g, ' ')} page...`;
-        appendMessage(`AI: ${response}`, false);
-        setTimeout(() => {
-          window.location.href = redirectUrl;
-        }, 1500);
-      } else {
-        appendMessage(`AI: ${response}`, false);
-      }
-    }
-  })();
-</script>
-
+    })();
+  </script>
 </body>
 </html>
