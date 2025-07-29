@@ -1,9 +1,9 @@
-# SCALE_AIRCRAFT_MAINT
-Starting code for aircraft maintenance web app
+#  Challenge 4: Weak Customer Engagement & Retention
 
-FORK the repo to your own account
-Clone that repo in Business Apps Studio
-
-IGNORE branch CERV1, CERV2, CERV3
+IGNORE branch main, CERV1, CERV2, CERV3
 Branch CERV4 contains the working UI and logic for Challenge 4: Weak Customer Engagement & Retention.
-To run CERV4, clone the repository and open index.html in your browser.
+To run CERV4, clone the repository and swopen index.html in your browser.
+Commands to run:
+cd to the directory you want your clone to be at and then run
+git clone https://github.com/Spenz7/scale2025.git
+git checkout CERV4
